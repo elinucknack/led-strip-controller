@@ -28,8 +28,8 @@ const bool mqttAnonymous = false;
 const String mqttUsername = "mqttuser";
 const String mqttPassword = "mqttpassword";
 const int mqttPort = 1883;
-const String mqttClientId = "fomalhaut";
-const String mqttTopic = "mysite/device/fomalhaut";
+const String mqttClientId = "clientid";
+const String mqttTopic = "mysite/device/devicename";
 const bool mqttUseSsl = false;
 const String mqttCaCert = R"EOF(
 -----BEGIN CERTIFICATE-----
@@ -53,9 +53,9 @@ const IPAddress ntpServer(217, 31, 202, 100);
 
 // LED pin configuration
 
-const int redPin = 12;
-const int greenPin = 13;
-const int bluePin = 14;
+const int redPin = 14;
+const int greenPin = 12;
+const int bluePin = 16;
 
 /* PROGRAM */
 
