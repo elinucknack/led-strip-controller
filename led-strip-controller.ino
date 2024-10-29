@@ -14,12 +14,14 @@ const IPAddress ip(192, 168, 1, 3);
 const IPAddress gateway(192, 168, 1, 1);
 const IPAddress subnet(255, 255, 255, 0);
 const IPAddress primaryDns(192, 168, 1, 1);
-const IPAddress secondaryDns(192, 168, 1, 2);
+const IPAddress secondaryDns(192, 168, 1, 2); // secondaryDns(0) for no secondary DSN
 
 // WiFi client configuration
 
 const String wifiSsid = "ssid";
 const String wifiPassword = "password";
+const bool wifiUseBssid = false;
+const uint8_t wifiBssid[6] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 // MQTT client configuration
 
@@ -53,9 +55,9 @@ const IPAddress ntpServer(217, 31, 202, 100);
 
 // LED pin configuration
 
-const int redPin = 14;
-const int greenPin = 12;
-const int bluePin = 16;
+const int redPin = 12;
+const int greenPin = 13;
+const int bluePin = 14;
 
 /* PROGRAM */
 
@@ -198,7 +200,11 @@ String getLocalIp() {
 
 void connectToWiFi() {
   Serial.print("Connecting to WiFi");
-  WiFi.begin(wifiSsid, wifiPassword);
+  if (wifiUseBssid) {
+    WiFi.begin(wifiSsid, wifiPassword, 0, wifiBssid);
+  } else {
+    WiFi.begin(wifiSsid, wifiPassword);
+  }
   setWiFiConnectionAttemptStart();
   while (!connectedToWiFi()) {
     if (wiFiConnectionAttemptTimedOut()) {

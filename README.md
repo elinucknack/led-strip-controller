@@ -16,11 +16,13 @@ In addition to control, the controller is also used to power the LED strip. The 
 
 You can see an example of the built hardware using universal drilled PCB:
 
-![LED strip controller top](led-strip-controller-top.jpg)
+![LED strip controller 1](led-strip-controller-1.jpg)
 
-![LED strip controller bottom](led-strip-controller-bottom.jpg)
+![LED strip controller 2](led-strip-controller-2.jpg)
 
-![LED strip controller top 2](led-strip-controller-top-2.jpg)
+![LED strip controller 3](led-strip-controller-3.jpg)
+
+![LED strip controller 4](led-strip-controller-4.jpg)
 
 **Note:** The ESP-201 module needed to be modified. The manufacturer places headers on the opposite side to where the components are soldered. I removed the headers and soldered them to the opposite side so that the entire device would fit in the box.
 

@@ -7,7 +7,7 @@
 	(title_block
 		(title "LED strip controller")
 		(date "2024-09-21")
-		(rev "1.0")
+		(rev "1.1")
 		(company "Eli Nucknack")
 	)
 	(lib_symbols
@@ -1595,12 +1595,6 @@
 		(uuid "4e2a96c0-f2a3-40c5-a38e-a748ffcd32b6")
 	)
 	(junction
-		(at 190.5 88.9)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4f43ae37-7376-40be-b943-594c62482bfd")
-	)
-	(junction
 		(at 114.3 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1611,12 +1605,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5882777d-19e1-4b23-b6a6-db5ff9ca22e1")
-	)
-	(junction
-		(at 208.28 91.44)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "602b604f-ffc9-4ec7-801c-2cc01ee1c339")
 	)
 	(junction
 		(at 175.26 96.52)
@@ -1631,16 +1619,22 @@
 		(uuid "677de1eb-2ce1-41b3-b443-60686179296c")
 	)
 	(junction
+		(at 208.28 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6bcdf062-ff1f-4571-ab1f-a64c1f73697c")
+	)
+	(junction
 		(at 116.84 76.2)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7a8c9029-087a-4655-942a-34a3b305b5eb")
 	)
 	(junction
-		(at 226.06 93.98)
+		(at 226.06 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "a1f57a3e-705a-4bb7-b36a-af49ab9f0e08")
+		(uuid "957fdcc3-c67c-4fa4-a93f-380b20d77707")
 	)
 	(junction
 		(at 76.2 73.66)
@@ -1679,6 +1673,12 @@
 		(uuid "c1a02f44-cc1f-48e9-8294-d7872894e487")
 	)
 	(junction
+		(at 190.5 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e21d6a18-4a70-46cd-9a52-1f0506afd58c")
+	)
+	(junction
 		(at 190.5 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1702,16 +1702,6 @@
 	)
 	(wire
 		(pts
-			(xy 208.28 91.44) (xy 208.28 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "03ae743d-efc7-40c0-8f0a-2e22f744228c")
-	)
-	(wire
-		(pts
 			(xy 172.72 119.38) (xy 177.8 119.38)
 		)
 		(stroke
@@ -1719,16 +1709,6 @@
 			(type default)
 		)
 		(uuid "04c561b2-3514-468a-b8cc-695910665185")
-	)
-	(wire
-		(pts
-			(xy 154.94 88.9) (xy 180.34 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0634e7e1-ce6e-4fa0-abf7-59c19706c777")
 	)
 	(wire
 		(pts
@@ -1772,7 +1752,7 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 83.82) (xy 190.5 88.9)
+			(xy 190.5 83.82) (xy 190.5 86.36)
 		)
 		(stroke
 			(width 0)
@@ -1802,7 +1782,7 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 93.98) (xy 226.06 96.52)
+			(xy 226.06 91.44) (xy 226.06 96.52)
 		)
 		(stroke
 			(width 0)
@@ -1872,13 +1852,23 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 88.9) (xy 190.5 88.9)
+			(xy 187.96 86.36) (xy 190.5 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "30550557-bc67-4665-a355-c1ca0b64750d")
+	)
+	(wire
+		(pts
+			(xy 154.94 91.44) (xy 215.9 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "307e6e60-de25-4ba9-b22b-31ffef78b993")
 	)
 	(wire
 		(pts
@@ -1922,7 +1912,7 @@
 	)
 	(wire
 		(pts
-			(xy 223.52 93.98) (xy 226.06 93.98)
+			(xy 223.52 91.44) (xy 226.06 91.44)
 		)
 		(stroke
 			(width 0)
@@ -1959,16 +1949,6 @@
 			(type default)
 		)
 		(uuid "46c810c3-079c-4c27-942d-b20f5fc3b7f1")
-	)
-	(wire
-		(pts
-			(xy 154.94 93.98) (xy 215.9 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4760ce96-937a-40d3-b4d0-d53494ba70de")
 	)
 	(wire
 		(pts
@@ -2092,16 +2072,6 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 91.44) (xy 198.12 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c0e233b-ea63-49ef-9112-1f2b7a40de7f")
-	)
-	(wire
-		(pts
 			(xy 135.89 71.12) (xy 135.89 78.74)
 		)
 		(stroke
@@ -2122,7 +2092,17 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 88.9) (xy 226.06 93.98)
+			(xy 208.28 88.9) (xy 208.28 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7503a94d-e1f9-49f0-9892-54d1248988a6")
+	)
+	(wire
+		(pts
+			(xy 226.06 88.9) (xy 226.06 91.44)
 		)
 		(stroke
 			(width 0)
@@ -2152,6 +2132,16 @@
 	)
 	(wire
 		(pts
+			(xy 154.94 86.36) (xy 180.34 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7cce2cf7-f6cd-4b5c-a9cc-386241881221")
+	)
+	(wire
+		(pts
 			(xy 76.2 119.38) (xy 101.6 119.38)
 		)
 		(stroke
@@ -2172,6 +2162,16 @@
 	)
 	(wire
 		(pts
+			(xy 190.5 86.36) (xy 190.5 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "912b9b39-52ef-4412-8827-fc81545c69b1")
+	)
+	(wire
+		(pts
 			(xy 154.94 99.06) (xy 160.02 99.06)
 		)
 		(stroke
@@ -2182,13 +2182,23 @@
 	)
 	(wire
 		(pts
-			(xy 208.28 86.36) (xy 208.28 91.44)
+			(xy 208.28 86.36) (xy 208.28 88.9)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "9bf9e401-c792-45b4-8e83-ca579e037d95")
+	)
+	(wire
+		(pts
+			(xy 154.94 88.9) (xy 198.12 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c68c6b2-f923-467d-879e-abb8a8c3c50d")
 	)
 	(wire
 		(pts
@@ -2402,16 +2412,6 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 88.9) (xy 190.5 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ec5e147a-3c5c-496e-bc6b-32887a540682")
-	)
-	(wire
-		(pts
 			(xy 104.14 83.82) (xy 101.6 83.82)
 		)
 		(stroke
@@ -2452,7 +2452,7 @@
 	)
 	(wire
 		(pts
-			(xy 205.74 91.44) (xy 208.28 91.44)
+			(xy 205.74 88.9) (xy 208.28 88.9)
 		)
 		(stroke
 			(width 0)
@@ -3092,7 +3092,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 219.71 93.98 90)
+		(at 219.71 91.44 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3101,14 +3101,6 @@
 		(dnp no)
 		(uuid "88a382d9-85fa-4b67-bf5d-1df9c7ece825")
 		(property "Reference" "R9"
-			(at 219.71 100.33 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "470R"
 			(at 219.71 97.79 90)
 			(effects
 				(font
@@ -3116,8 +3108,16 @@
 				)
 			)
 		)
+		(property "Value" "470R"
+			(at 219.71 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" ""
-			(at 219.71 92.202 90)
+			(at 219.71 89.662 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3126,7 +3126,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 219.71 93.98 0)
+			(at 219.71 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3135,7 +3135,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 219.71 93.98 0)
+			(at 219.71 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3296,7 +3296,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 201.93 91.44 90)
+		(at 201.93 88.9 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3305,14 +3305,6 @@
 		(dnp no)
 		(uuid "95adc5ec-ee59-4b2b-a1d5-91b8c896d70d")
 		(property "Reference" "R7"
-			(at 201.93 97.79 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "470R"
 			(at 201.93 95.25 90)
 			(effects
 				(font
@@ -3320,8 +3312,16 @@
 				)
 			)
 		)
+		(property "Value" "470R"
+			(at 201.93 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" ""
-			(at 201.93 89.662 90)
+			(at 201.93 87.122 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3330,7 +3330,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 201.93 91.44 0)
+			(at 201.93 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3339,7 +3339,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 201.93 91.44 0)
+			(at 201.93 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3435,7 +3435,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 184.15 88.9 270)
+		(at 184.15 86.36 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3443,14 +3443,6 @@
 		(dnp no)
 		(uuid "97f1faf9-009b-465a-9a25-9899f79b4168")
 		(property "Reference" "R5"
-			(at 184.15 95.25 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "470R"
 			(at 184.15 92.71 90)
 			(effects
 				(font
@@ -3458,8 +3450,16 @@
 				)
 			)
 		)
+		(property "Value" "470R"
+			(at 184.15 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" ""
-			(at 184.15 87.122 90)
+			(at 184.15 84.582 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3468,7 +3468,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 184.15 88.9 0)
+			(at 184.15 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3477,7 +3477,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 184.15 88.9 0)
+			(at 184.15 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
