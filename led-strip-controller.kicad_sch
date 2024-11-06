@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "LED strip controller")
-		(date "2024-09-21")
-		(rev "1.1")
+		(date "2024-11-06")
+		(rev "1.2")
 		(company "Eli Nucknack")
 	)
 	(lib_symbols
@@ -420,6 +420,164 @@
 				)
 			)
 		)
+		(symbol "Device:C_Polarized"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794) (xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:Q_NPN_Darlington_BCE"
 			(pin_names
 				(offset 0) hide)
@@ -731,6 +889,146 @@
 				)
 			)
 		)
+		(symbol "Regulator_Linear:LM1085-3.3"
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at -3.81 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LM1085-3.3"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm1085.pdf"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "3A 27V Linear Regulator, Fixed Output 3.3V, TO-220/TO-263"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "Voltage Regulator Fixed 5A Positive"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TO?220* TO?263*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LM1085-3.3_0_1"
+				(rectangle
+					(start -5.08 1.905)
+					(end 5.08 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "LM1085-3.3_1_1"
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "VO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -7.62 0 0)
+					(length 2.54)
+					(name "VI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Switch:SW_Push"
 			(pin_numbers hide)
 			(pin_names
@@ -867,154 +1165,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
-		(symbol "led-strip-controller:DC-DC_converter"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at -7.112 6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "12V->3V3"
-				(at 7.62 6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify right)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "DC-DC_converter_0_1"
-				(rectangle
-					(start -7.62 5.08)
-					(end 7.62 -5.08)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "DC-DC_converter_1_1"
-				(polyline
-					(pts
-						(xy 0 5.08) (xy 0 -5.08)
-					)
-					(stroke
-						(width 0.254)
-						(type dash)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin power_in line
-					(at -10.16 2.54 0)
-					(length 2.54)
-					(name "+Vin"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -10.16 -2.54 0)
-					(length 2.54)
-					(name "-Vin"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_out line
-					(at 10.16 2.54 180)
-					(length 2.54)
-					(name "+Vout"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_out line
-					(at 10.16 -2.54 180)
-					(length 2.54)
-					(name "-Vout"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1559,6 +1709,12 @@
 		)
 	)
 	(junction
+		(at 101.6 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0659b135-8e9e-47f4-9640-acf11cb76e73")
+	)
+	(junction
 		(at 172.72 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1569,12 +1725,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "06c52941-1fa2-48d9-b82f-255bbff0dbd6")
-	)
-	(junction
-		(at 76.2 119.38)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "23504afc-db1f-4c1a-9fd1-aab921e99b90")
 	)
 	(junction
 		(at 213.36 119.38)
@@ -1599,12 +1749,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "53aee7b1-7e3a-46fd-9698-f05989b4548c")
-	)
-	(junction
-		(at 101.6 119.38)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5882777d-19e1-4b23-b6a6-db5ff9ca22e1")
 	)
 	(junction
 		(at 175.26 96.52)
@@ -1637,10 +1781,10 @@
 		(uuid "957fdcc3-c67c-4fa4-a93f-380b20d77707")
 	)
 	(junction
-		(at 76.2 73.66)
+		(at 81.28 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "a63a568e-0dfb-4216-8b48-f2502f34aeab")
+		(uuid "a764dfed-bc0e-4190-bb34-add6b9ff80c9")
 	)
 	(junction
 		(at 157.48 119.38)
@@ -1653,6 +1797,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "aedef07c-3071-44cb-b097-39c02ff09366")
+	)
+	(junction
+		(at 81.28 73.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "afb4ddf9-b7ef-4039-95f6-a55e38998fad")
 	)
 	(junction
 		(at 157.48 109.22)
@@ -1671,6 +1821,18 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c1a02f44-cc1f-48e9-8294-d7872894e487")
+	)
+	(junction
+		(at 81.28 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d88c0913-a905-4939-8d11-f01336f12be7")
+	)
+	(junction
+		(at 91.44 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e1304d97-8205-458f-9840-9319c1cf0bd5")
 	)
 	(junction
 		(at 190.5 86.36)
@@ -1792,16 +1954,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 88.9) (xy 101.6 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17e2d028-b8e9-499c-8c36-3d9150a896e2")
-	)
-	(wire
-		(pts
 			(xy 114.3 96.52) (xy 114.3 119.38)
 		)
 		(stroke
@@ -1809,16 +1961,6 @@
 			(type default)
 		)
 		(uuid "19485144-f70d-4419-9295-3180e578ddf5")
-	)
-	(wire
-		(pts
-			(xy 76.2 88.9) (xy 76.2 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1de8f741-b79f-4208-bf6c-ea0cb1df2a45")
 	)
 	(wire
 		(pts
@@ -1839,16 +1981,6 @@
 			(type default)
 		)
 		(uuid "2517be4b-8831-4495-84c9-8c88359811b1")
-	)
-	(wire
-		(pts
-			(xy 76.2 88.9) (xy 78.74 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "27a370b3-617f-415d-b000-67e530368123")
 	)
 	(wire
 		(pts
@@ -1899,6 +2031,16 @@
 			(type default)
 		)
 		(uuid "3432a14e-7c57-4b5e-ac4b-9fc00c9bb3c4")
+	)
+	(wire
+		(pts
+			(xy 101.6 105.41) (xy 101.6 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34ad0ec1-8ed6-44fd-a148-278e6402e34c")
 	)
 	(wire
 		(pts
@@ -1962,7 +2104,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 73.66) (xy 76.2 73.66)
+			(xy 78.74 73.66) (xy 81.28 73.66)
 		)
 		(stroke
 			(width 0)
@@ -1992,7 +2134,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 83.82) (xy 78.74 83.82)
+			(xy 81.28 83.82) (xy 83.82 83.82)
 		)
 		(stroke
 			(width 0)
@@ -2012,26 +2154,6 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 73.66) (xy 233.68 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5663e410-2dec-43a5-82f8-cc8a64bb0f0a")
-	)
-	(wire
-		(pts
-			(xy 101.6 88.9) (xy 101.6 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "58ca9f51-3194-41b9-9842-8f579e5fac49")
-	)
-	(wire
-		(pts
 			(xy 138.43 71.12) (xy 138.43 78.74)
 		)
 		(stroke
@@ -2042,13 +2164,13 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 119.38) (xy 76.2 119.38)
+			(xy 81.28 83.82) (xy 81.28 97.79)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "62119b5b-5338-472e-95e7-852f53f2645b")
+		(uuid "5b1fc638-c435-4ec4-beb4-ab37af3118fd")
 	)
 	(wire
 		(pts
@@ -2142,16 +2264,6 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 119.38) (xy 101.6 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "82826771-ccde-487b-bd54-1b0fd280f381")
-	)
-	(wire
-		(pts
 			(xy 213.36 78.74) (xy 233.68 78.74)
 		)
 		(stroke
@@ -2159,6 +2271,26 @@
 			(type default)
 		)
 		(uuid "8699e9e4-3b99-4ef1-9d12-513f7db4e11e")
+	)
+	(wire
+		(pts
+			(xy 101.6 83.82) (xy 101.6 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f0d9aa5-298b-440b-9dff-188445240acf")
+	)
+	(wire
+		(pts
+			(xy 91.44 91.44) (xy 91.44 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9114a44d-261a-443f-b608-d0758fa5fa80")
 	)
 	(wire
 		(pts
@@ -2222,6 +2354,16 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 119.38) (xy 114.3 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a65e0136-55ab-45a1-99c1-d1631ff0d38c")
+	)
+	(wire
+		(pts
 			(xy 133.35 71.12) (xy 133.35 78.74)
 		)
 		(stroke
@@ -2232,7 +2374,7 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 78.74) (xy 68.58 119.38)
+			(xy 73.66 78.74) (xy 73.66 119.38)
 		)
 		(stroke
 			(width 0)
@@ -2252,7 +2394,7 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 119.38) (xy 114.3 119.38)
+			(xy 73.66 119.38) (xy 81.28 119.38)
 		)
 		(stroke
 			(width 0)
@@ -2279,6 +2421,26 @@
 			(type default)
 		)
 		(uuid "bcd4352a-31b1-4bac-b3aa-0f4d04b6d205")
+	)
+	(wire
+		(pts
+			(xy 91.44 119.38) (xy 101.6 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bdd8f926-66bf-41e2-9f7f-e65d3b94f793")
+	)
+	(wire
+		(pts
+			(xy 81.28 105.41) (xy 81.28 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be2cf203-8aa3-42ae-baa2-992bc634e59f")
 	)
 	(wire
 		(pts
@@ -2332,6 +2494,16 @@
 	)
 	(wire
 		(pts
+			(xy 81.28 119.38) (xy 91.44 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cb3d02ec-2a92-44d4-8d3d-53be7149633d")
+	)
+	(wire
+		(pts
 			(xy 119.38 109.22) (xy 116.84 109.22)
 		)
 		(stroke
@@ -2339,6 +2511,16 @@
 			(type default)
 		)
 		(uuid "ce58b85f-39ee-4669-b2f1-471023ed805a")
+	)
+	(wire
+		(pts
+			(xy 81.28 73.66) (xy 233.68 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d018ce87-8ab2-48ad-ba25-b1dabeaba72c")
 	)
 	(wire
 		(pts
@@ -2372,7 +2554,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 73.66) (xy 76.2 83.82)
+			(xy 81.28 73.66) (xy 81.28 83.82)
 		)
 		(stroke
 			(width 0)
@@ -3024,7 +3206,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_Coaxial")
-		(at 68.58 73.66 0)
+		(at 73.66 73.66 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3033,7 +3215,7 @@
 		(dnp no)
 		(uuid "879110a6-8286-4755-8b5f-d2ef35425d94")
 		(property "Reference" "J1"
-			(at 62.23 73.9532 90)
+			(at 67.31 73.9532 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3041,7 +3223,7 @@
 			)
 		)
 		(property "Value" "5.5/2.1"
-			(at 64.77 73.9532 90)
+			(at 69.85 73.9532 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3049,7 +3231,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 68.58 73.66 0)
+			(at 73.66 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3058,7 +3240,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 68.58 73.66 0)
+			(at 73.66 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3067,7 +3249,7 @@
 			)
 		)
 		(property "Description" "coaxial connector (BNC, SMA, SMB, SMC, Cinch/RCA, LEMO, ...)"
-			(at 68.58 73.66 0)
+			(at 73.66 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3501,6 +3683,78 @@
 		)
 	)
 	(symbol
+		(lib_id "Regulator_Linear:LM1085-3.3")
+		(at 91.44 83.82 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a1c9e5a9-1213-443a-b291-a7bfea14e739")
+		(property "Reference" "U1"
+			(at 91.44 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LM1085IT-3.3"
+			(at 91.44 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 91.44 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm1085.pdf"
+			(at 91.44 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "3A 27V Linear Regulator, Fixed Output 3.3V, TO-220/TO-263"
+			(at 91.44 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "556f0b4e-431d-43c5-ad08-35d0d56f28bf")
+		)
+		(pin "3"
+			(uuid "8fc7dba0-1f19-46a1-a0e5-2503cdb15f9f")
+		)
+		(pin "2"
+			(uuid "13e1c6ec-57af-4a8a-8570-4d22986af2a1")
+		)
+		(instances
+			(project ""
+				(path "/714ff255-3f87-47db-a91c-6f927582f246"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:Q_NPN_Darlington_BCE")
 		(at 226.06 83.82 270)
 		(mirror x)
@@ -3633,6 +3887,76 @@
 			(project ""
 				(path "/714ff255-3f87-47db-a91c-6f927582f246"
 					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 101.6 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c4724f9c-e7b7-4b11-96f5-9faac18d9d63")
+		(property "Reference" "C2"
+			(at 105.41 99.4409 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF"
+			(at 105.41 101.9809 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 102.5652 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 101.6 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 101.6 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "5444d5f6-1a7e-4223-af8b-5591ed680461")
+		)
+		(pin "1"
+			(uuid "7dc39297-d4f7-46da-86cb-ce0a112610f0")
+		)
+		(instances
+			(project ""
+				(path "/714ff255-3f87-47db-a91c-6f927582f246"
+					(reference "C2")
 					(unit 1)
 				)
 			)
@@ -3773,80 +4097,6 @@
 		)
 	)
 	(symbol
-		(lib_id "led-strip-controller:DC-DC_converter")
-		(at 88.9 86.36 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ddfc498b-5f73-4c20-b4cf-d273794a7c61")
-		(property "Reference" "U1"
-			(at 88.9 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "12V->3V3"
-			(at 88.9 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 88.9 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 88.9 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 88.9 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "37d12923-d705-4bc4-b1c9-3d778a890a9e")
-		)
-		(pin "3"
-			(uuid "b566da1d-9380-4d67-b034-d9e92b1d1891")
-		)
-		(pin "1"
-			(uuid "84a30b1d-2593-4def-94bd-965499674729")
-		)
-		(pin "4"
-			(uuid "d377a8af-e8e0-4662-b476-836064473d62")
-		)
-		(instances
-			(project ""
-				(path "/714ff255-3f87-47db-a91c-6f927582f246"
-					(reference "U1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:Conn_01x04_Pin")
 		(at 238.76 76.2 0)
 		(mirror y)
@@ -3917,6 +4167,76 @@
 			(project "led-strip-controller"
 				(path "/714ff255-3f87-47db-a91c-6f927582f246"
 					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 81.28 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e982c513-d40d-4bf5-8f76-dbcaeb46cbd3")
+		(property "Reference" "C1"
+			(at 85.09 99.4409 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF"
+			(at 85.09 101.9809 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 82.2452 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 81.28 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 81.28 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "d8227bc2-686c-4025-a22d-25bba099c3d0")
+		)
+		(pin "1"
+			(uuid "4ff2842a-9280-4933-b502-160973d0bf12")
+		)
+		(instances
+			(project ""
+				(path "/714ff255-3f87-47db-a91c-6f927582f246"
+					(reference "C1")
 					(unit 1)
 				)
 			)

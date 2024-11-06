@@ -12,7 +12,7 @@ The controller consists of an ESP-201 module with additional electronic componen
 
 **Note:** The scheme is also available in the `.kicad_sch` format (editable in the KiCad program).
 
-In addition to control, the controller is also used to power the LED strip. The used components (resistors and Darlington transistors) allows to supply the LED strip up to 4A for each color. By replacing the step-down DC-DC converter and other components, it's possible to supply the LED strip with higher voltage and current. It's recommended to use detachable step-down DC-DC converter. The removal of it is needed to use the programming interface `J2`. Buttons `PRG` and `RST` are added to ESP-201 to simply enable programming mode and device resetting.
+In addition to control, the controller is also used to power the LED strip. The used components (resistors and Darlington transistors) allows to supply the LED strip up to 4A for each color. By replacing the voltage regulator `U1` and other components, it's possible to supply the LED strip with higher voltage and current. Buttons `PRG` and `RST` are added to ESP-201 to simply enable programming mode and device resetting.
 
 You can see an example of the built hardware using universal drilled PCB:
 
@@ -22,9 +22,9 @@ You can see an example of the built hardware using universal drilled PCB:
 
 ![LED strip controller 3](led-strip-controller-3.jpg)
 
-![LED strip controller 4](led-strip-controller-4.jpg)
+**Note:** The ESP-201 module needed to be modified. The manufacturer places headers on the opposite side to where the components are soldered. I removed the headers and soldered them to the opposite side so that the entire device would fit in the box. In this example, I also use the internal antenne instead of the external. The selection is done by resoldering the 0Ω resitor:
 
-**Note:** The ESP-201 module needed to be modified. The manufacturer places headers on the opposite side to where the components are soldered. I removed the headers and soldered them to the opposite side so that the entire device would fit in the box.
+![ESP-201](esp-201.jpg)
 
 ## Software installation
 
