@@ -31,7 +31,8 @@ const String mqttUsername = "mqttuser";
 const String mqttPassword = "mqttpassword";
 const int mqttPort = 1883;
 const String mqttClientId = "clientid";
-const String mqttTopic = "mysite/device/devicename";
+const String mqttDeviceTopic = "mysite/device/devicename";
+const String mqttLedStripTopic = "mysite/led-strip/ledstripname";
 const bool mqttUseSsl = false;
 const String mqttCaCert = R"EOF(
 -----BEGIN CERTIFICATE-----
@@ -137,7 +138,9 @@ void reconnectToMqttBroker();
 
 String getUptime();
 
-String getState();
+String getDeviceState();
+
+String getLedStripState();
 
 bool timeToPublishState();
 
@@ -356,11 +359,11 @@ void setLedStripColor(String payload) {
 void mqttCallback(char *topic, byte *payload, unsigned int length) {
   String strTopic = String(topic);
   String strPayload = String((char *)payload).substring(0, length);
-  if (strTopic.equals(mqttTopic + "/on")) {
+  if (strTopic.equals(mqttLedStripTopic + "/on")) {
     setLedStripOn(strPayload);
-  } else if (strTopic.equals(mqttTopic + "/brightness")) {
+  } else if (strTopic.equals(mqttLedStripTopic + "/brightness")) {
     setLedStripBrightness(strPayload);
-  } else if (strTopic.equals(mqttTopic + "/color")) {
+  } else if (strTopic.equals(mqttLedStripTopic + "/color")) {
     setLedStripColor(strPayload);
   } else {
     Serial.print("Topic \"");
@@ -390,7 +393,7 @@ bool mqttBrokerConnectionAttemptTimedOut() {
 }
 
 void subscribeMqttClient() {
-  mqttClient.subscribe((mqttTopic + "/#").c_str());
+  mqttClient.subscribe((mqttLedStripTopic + "/#").c_str());
 }
 
 int getMqttClientState() {
@@ -480,7 +483,7 @@ String getUptime() {
   return strWeeks + strDays + strHours + ":" + strMinutes + ":" + strSeconds;
 }
 
-String getState() {
+String getDeviceState() {
   String coreVersion = ESP.getCoreVersion();
   int cpuFrequency = ESP.getCpuFreqMHz();
   int flashChipSize = ESP.getFlashChipSize();
@@ -507,6 +510,19 @@ String getState() {
     "}";
 }
 
+String getLedStripState() {
+  String on = ledStripOn ? "true" : "false";
+  char color[8];
+  sprintf(color, "#%02x%02x%02x", ledStripRed, ledStripGreen, ledStripBlue);
+  int timestamp = time(nullptr);
+  return String("{\n") +
+    "  \"on\": " + on + ",\n" +
+    "  \"brightness\": " + ledStripBrightness + ",\n" +
+    "  \"color\": \"" + color + "\",\n" +
+    "  \"timestamp\": " + timestamp + "\n" +
+    "}";
+}
+
 bool timeToPublishState() {
   return millis() - stateLastPublished >= statePublishInterval;
 }
@@ -516,7 +532,8 @@ void setStateLastPublished() {
 }
 
 void publishState() {
-  mqttClient.publish((mqttTopic + "/state").c_str(), getState().c_str(), true);
+  mqttClient.publish((mqttDeviceTopic + "/state").c_str(), getDeviceState().c_str(), true);
+  mqttClient.publish((mqttLedStripTopic + "/state").c_str(), getLedStripState().c_str(), true);
   setStateLastPublished();
 }
 
