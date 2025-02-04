@@ -18,7 +18,7 @@ Below, you can see both sides of the controller PCB design (also available in th
 
 ![PCB design - bottom side](led-strip-controller-pcb-design-bottom.png "PCB design - bottom side")
 
-The repository also includes printable 3D models (`.blend` files) of cases for the PCB. For assembling the box, you need 4 additional screws (e.g. 3.5×30mm screws) and a cable gland M12×1.5 needs to be used. Contrary to V1, V2 has additional mounts on the wall or furniture. 
+The repository also includes printable 3D models (`.stl` files) of cases for the PCB. For assembling the case, you need 4 additional screws (e.g. 3.5×30mm screws) and a cable gland M12×1.5 needs to be used. Contrary to V1, V2 has additional mounts on the wall or furniture. 
 
 Below, you can see an example of the built hardware:
 
@@ -30,7 +30,7 @@ Below, you can see an example of the built hardware:
 
 ![LED strip controller example 4](led-strip-controller-example-4.jpg "LED strip controller example 4")
 
-**Note:** The ESP-201 module needed to be modified. The manufacturer places headers on the opposite side to where the components are soldered. I removed the headers and soldered them to the opposite side so that the entire device would fit in the box. In this example, I also use the internal antenne instead of the external. The selection is done by resoldering the 0Ω resitor:
+**Note:** The ESP-201 module needed to be modified. The manufacturer places headers on the opposite side to where the components are soldered. I removed the headers and soldered them to the opposite side so that the entire device would fit in the case. In this example, I also use the internal antenne instead of the external. The selection is done by resoldering the 0Ω resitor:
 
 ![ESP-201](esp-201.jpg "ESP-201")
 
