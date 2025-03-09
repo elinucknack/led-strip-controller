@@ -146,6 +146,10 @@ bool timeToPublishState();
 
 void setStateLastPublished();
 
+void publishDeviceState();
+
+void publishLedStripState();
+
 void publishState();
 
 void setUpLedStrip();
@@ -361,10 +365,13 @@ void mqttCallback(char *topic, byte *payload, unsigned int length) {
   String strPayload = String((char *)payload).substring(0, length);
   if (strTopic.equals(mqttLedStripTopic + "/on")) {
     setLedStripOn(strPayload);
+    publishLedStripState();
   } else if (strTopic.equals(mqttLedStripTopic + "/brightness")) {
     setLedStripBrightness(strPayload);
+    publishLedStripState();
   } else if (strTopic.equals(mqttLedStripTopic + "/color")) {
     setLedStripColor(strPayload);
+    publishLedStripState();
   } else {
     Serial.print("Topic \"");
     Serial.print(topic);
@@ -531,9 +538,17 @@ void setStateLastPublished() {
   stateLastPublished = millis();
 }
 
-void publishState() {
+void publishDeviceState() {
   mqttClient.publish((mqttDeviceTopic + "/state").c_str(), getDeviceState().c_str(), true);
+}
+
+void publishLedStripState() {
   mqttClient.publish((mqttLedStripTopic + "/state").c_str(), getLedStripState().c_str(), true);
+}
+
+void publishState() {
+  publishDeviceState();
+  publishLedStripState();
   setStateLastPublished();
 }
 
