@@ -86,7 +86,7 @@ The device state contains the following data:
 
 The LED strip controller also sends the LED strip state every 15 senconds using the `led-strip-topic/state` topic.
 
-The device state contains the following data:
+The LED strip state contains the following data:
 - `on` (a boolean value indicating if the LED strip is or or not)
 - `brightness` (in percent, integer value)
 - `color` (in the `#rrggbb` format)
