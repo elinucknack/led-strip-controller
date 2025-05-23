@@ -36,7 +36,7 @@ Below, you can see an example of the built hardware:
 
 ## Software installation
 
-1. Open the `led-strip-controller.ino` file using the Arduino IDE program.
+1. Open the `led-strip-controller.ino` file using the Arduino IDE.
 
 2. Customize the configuration part:
    - Static IP configuration:
@@ -55,7 +55,7 @@ Below, you can see an example of the built hardware:
 	 - `mqttUsername` and `mqttPassword`: In case of the non-anonymous access, set the username and the password.
 	 - `mqttPort`: The MQTT server port.
 	 - `mqttClientId`: The MQTT client identifier of the LED strip controller.
-	 - `mqttDeviceTopic`: The topic used for reporoting the LED strip controller state.
+	 - `mqttDeviceTopic`: The topic used for reporting the LED strip controller state.
 	 - `mqttLedStripTopic`: The topic used for controlling the LED strip.
 	 - `mqttUseSsl`: Set `true` in case you want to use the secure MQTT connection. Otherwise, set `false`.
 	 - `mqttCaCert`, `mqttClientCert` and `mqttClientKey`: Set the CA certificate, the client public certificate and the client key using the Base64-encoded DER format.
