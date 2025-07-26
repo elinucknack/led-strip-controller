@@ -18,7 +18,7 @@ Below, you can see both sides of the controller PCB design (also available in th
 
 ![PCB design - bottom side](led-strip-controller-pcb-design-bottom.png "PCB design - bottom side")
 
-The repository also includes printable 3D models (`.stl` files) of cases for the PCB. For assembling the case, you need 4 3.5×30mm screws and a cable gland M12×1.5 needs to be used. Contrary to V1, V2 has additional mounts on the wall or furniture. 
+The repository also includes printable 3D models (`.stl` files) of cases for the PCB. To assembly the case, you need 4 3.5×30mm screws and a cable gland M12×1.5 needs to be used. Contrary to V1, V2 has additional mounts on the wall or furniture. 
 
 Below, you can see an example of the built hardware:
 
