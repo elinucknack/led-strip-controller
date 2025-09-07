@@ -84,7 +84,7 @@ The device state contains the following data:
 - `uptime` (using the format `(W'w')(D'd')HH:MI:SS`)
 - `timestamp` (Unix time in seconds)
 
-The LED strip controller also sends the LED strip state every 15 senconds using the `led-strip-topic/state` topic, the `retain` flag is set to `true`.
+The LED strip controller also sends the LED strip state every 15 senconds using the `led-strip-topic/state` topic, the `retain` flag is set to `true` and the `QoS` flag is set to `0`.
 
 The LED strip state contains the following data:
 - `on` (a boolean value indicating if the LED strip is or or not)
