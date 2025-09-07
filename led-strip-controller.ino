@@ -60,6 +60,14 @@ const int redPin = 12;
 const int greenPin = 13;
 const int bluePin = 14;
 
+// EEPROM configuration
+
+const int eepromOnAddress = 0;
+const int eepromBrightnessAddress = 1;
+const int eepromColorRedAddress = 2;
+const int eepromColorGreenAddress = 3;
+const int eepromColorBlueAddress = 4;
+
 /* PROGRAM */
 
 int wiFiConnectionAttemptTimeout = 30000;
@@ -68,13 +76,20 @@ int wiFiConnectionAttemptStart = 0;
 int ntpServerConnectionAttemptTimeout = 30000;
 int ntpServerConnectionAttemptStart = 0;
 
-WiFiClient wiFiClient;
-BearSSL::WiFiClientSecure wiFiClientSecure;
-PubSubClient mqttClient(mqttUseSsl ? wiFiClientSecure : wiFiClient);
 int mqttBrokerConnectionAttemptTimeout = 60000;
 int mqttBrokerConnectionAttemptStart = 0;
-int statePublishInterval = 15000;
-int stateLastPublished = 0;
+
+WiFiClient wiFiClient;
+BearSSL::WiFiClientSecure wiFiClientSecure;
+
+PubSubClient mqttClient(mqttUseSsl ? wiFiClientSecure : wiFiClient);
+
+int deviceStatePublishInterval = 15000;
+int deviceStateLastPublished = 0;
+
+bool ledStripStateLoaded = false;
+int ledStripStatePublishInterval = 15000;
+int ledStripStateLastPublished = 0;
 
 bool ledStripOn = false;
 int ledStripBrightness = 100;
@@ -88,92 +103,75 @@ void loop();
 
 void configureStaticIp();
 
-bool connectedToWiFi();
-
-void setWiFiConnectionAttemptStart();
-
-bool wiFiConnectionAttemptTimedOut();
-
-String getLocalIp();
-
 void connectToWiFi();
 
 void reconnectToWiFi();
-
-bool connectedToNtpServer();
-
-void setNtpServerConnectionAttemptStart();
-
-bool ntpServerConnectionAttemptTimedOut();
 
 void connectToNtpServer();
 
 void configureSsl();
 
-bool connectMqttClient();
-
-bool connectedToMqttBroker();
-
-void setLedStripOn(String payload);
-
-void setLedStripBrightness(String payload);
-
-void setLedStripColor(String payload);
-
-void mqttCallback(char *topic, byte *payload, unsigned int length);
-
-void setMqttBrokerConnectionAttemptStart();
-
-bool mqttBrokerConnectionAttemptTimedOut();
-
-void subscribeMqttClient();
-
-int getMqttClientState();
-
-void printSslError();
-
 void connectToMqttBroker();
 
 void reconnectToMqttBroker();
 
-String getUptime();
+bool connectMqttClient();
 
-String getDeviceState();
+void subscribeMqttClient();
 
-String getLedStripState();
-
-bool timeToPublishState();
-
-void setStateLastPublished();
+void mqttCallback(char *topic, byte *payload, unsigned int length);
 
 void publishDeviceState();
 
+String getDeviceState();
+
+void loadLedStripState(String payload);
+
 void publishLedStripState();
 
-void publishState();
+String getLedStripState();
+
+void setLedStripOn(String payload);
+
+void setLedStripOnValue(bool on);
+
+void setLedStripBrightness(String payload);
+
+void setLedStripBrightnessValue(int brightness);
+
+void setLedStripColor(String payload);
+
+void setLedStripColorValue(String color);
 
 void setUpLedStrip();
 
+void printSslError();
+
+String getUptime();
+
 void setup() {
-  delay(5000);
   Serial.begin(115200);
   configureStaticIp();
   connectToWiFi();
   connectToNtpServer();
   connectToMqttBroker();
-  publishState();
+  ledStripStateLastPublished = millis() - 10000;
 }
 
 void loop() {
-  if (!connectedToWiFi()) {
+  if (WiFi.status() != WL_CONNECTED) {
     reconnectToWiFi();
   }
-  if (!connectedToMqttBroker()) {
+  if (!mqttClient.connected()) {
     reconnectToMqttBroker();
-    publishState();
   }
-  if (timeToPublishState()) {
-    publishState();
+  if (millis() - deviceStateLastPublished >= deviceStatePublishInterval) {
+    publishDeviceState();
+    deviceStateLastPublished = millis();
+  }
+  if (millis() - ledStripStateLastPublished >= ledStripStatePublishInterval) {
+    publishLedStripState();
+    ledStripStateLastPublished = millis();
   }
   mqttClient.loop();
   setUpLedStrip();
@@ -189,22 +187,6 @@ void configureStaticIp() {
   }
 }
 
-bool connectedToWiFi() {
-  return WiFi.status() == WL_CONNECTED;
-}
-
-void setWiFiConnectionAttemptStart() {
-  wiFiConnectionAttemptStart = millis();
-}
-
-bool wiFiConnectionAttemptTimedOut() {
-  return millis() - wiFiConnectionAttemptStart >= wiFiConnectionAttemptTimeout;
-}
-
-String getLocalIp() {
-  return WiFi.localIP().toString();
-}
-
 void connectToWiFi() {
   Serial.print("Connecting to WiFi");
   if (wifiUseBssid) {
@@ -212,9 +194,9 @@ void connectToWiFi() {
   } else {
     WiFi.begin(wifiSsid, wifiPassword);
   }
-  setWiFiConnectionAttemptStart();
-  while (!connectedToWiFi()) {
-    if (wiFiConnectionAttemptTimedOut()) {
+  wiFiConnectionAttemptStart = millis();
+  while (WiFi.status() != WL_CONNECTED) {
+    if (millis() - wiFiConnectionAttemptStart >= wiFiConnectionAttemptTimeout) {
       Serial.print("\nConnection attempt to WiFi timed out. Device restart...");
       ESP.restart();
     }
@@ -223,14 +205,14 @@ void connectToWiFi() {
   }
   WiFi.setAutoReconnect(true);
   Serial.print("\nConnected to WiFi. Local IP address: ");
-  Serial.println(getLocalIp());
+  Serial.println(WiFi.localIP().toString());
 }
 
 void reconnectToWiFi() {
   Serial.println("Connection to WiFi lost, reconnecting to WiFi");
-  setWiFiConnectionAttemptStart();
-  while (!connectedToWiFi()) {
-    if (wiFiConnectionAttemptTimedOut()) {
+  wiFiConnectionAttemptStart = millis();
+  while (WiFi.status() != WL_CONNECTED) {
+    if (millis() - wiFiConnectionAttemptStart >= wiFiConnectionAttemptTimeout) {
       Serial.print("\nReconnection attempt to WiFi timed out. Device restart...");
       ESP.restart();
     }
@@ -238,27 +220,15 @@ void reconnectToWiFi() {
     delay(1000);
   }
   Serial.print("\nReconnected to WiFi. Local IP address: ");
-  Serial.println(getLocalIp());
-}
-
-bool connectedToNtpServer() {
-  return (bool) time(nullptr);
-}
-
-void setNtpServerConnectionAttemptStart() {
-  ntpServerConnectionAttemptStart = millis();
-}
-
-bool ntpServerConnectionAttemptTimedOut() {
-  return millis() - ntpServerConnectionAttemptStart >= ntpServerConnectionAttemptTimeout;
+  Serial.println(WiFi.localIP().toString());
 }
 
 void connectToNtpServer() {
   Serial.print("Connecting to NTP server");
   configTime(0, 0, ntpServer.toString());
-  setNtpServerConnectionAttemptStart();
-  while (!connectedToNtpServer()) {
-    if (wiFiConnectionAttemptTimedOut()) {
+  ntpServerConnectionAttemptStart = millis();
+  while (!((bool) time(nullptr))) {
+    if (millis() - ntpServerConnectionAttemptStart >= ntpServerConnectionAttemptTimeout) {
       Serial.print("\nConnection attempt to NTP server timed out. Device restart...");
       ESP.restart();
     }
@@ -277,110 +247,65 @@ void configureSsl() {
   wiFiClientSecure.setClientRSACert(clientCertList, clientKey);
 }
 
-void setLedStripOn(String payload) {
-  JsonDocument document;
-  DeserializationError error = deserializeJson(document, payload);
-  if (error) {
-    Serial.print("LED strip on setting failed: Invalid JSON payload \"");
-    Serial.print(payload);
-    Serial.print("\": ");
-    Serial.println(error.c_str());
-  } else {
-    bool on = document["value"];
-    ledStripOn = on;
-    Serial.print("LED strip on set to \"");
-    Serial.print(on);
-    Serial.println("\"");
+void connectToMqttBroker() {
+  if (mqttUseSsl) {
+    configureSsl();
   }
-}
-
-void setLedStripBrightness(String payload) {
-  JsonDocument document;
-  DeserializationError error = deserializeJson(document, payload);
-  if (error) {
-    Serial.print("LED strip brightness setting failed: Invalid JSON payload \"");
-    Serial.print(payload);
-    Serial.print("\": ");
-    Serial.println(error.c_str());
-  } else {
-    int brightness = document["value"];
-    if (brightness < 0 || brightness > 100) {
-      Serial.print("LED strip brightness setting failed: Invalid brightness value \"");
-      Serial.print(brightness);
-      Serial.println("\": Must be from 0 to 100.");
+  mqttClient.setServer(mqttBroker.c_str(), mqttPort);
+  mqttClient.setBufferSize(512);
+  mqttClient.setCallback(mqttCallback);
+  mqttBrokerConnectionAttemptStart = millis();
+  while (!mqttClient.connected()) {
+    Serial.println("Connecting to MQTT broker");
+    if (connectMqttClient()) {
+      Serial.print("Connected to MQTT broker. MQTT broker host: ");
+      Serial.print(mqttBroker);
+      Serial.print(":");
+      Serial.println(mqttPort);
+      subscribeMqttClient();
     } else {
-      ledStripBrightness = brightness;
-      Serial.print("LED strip brightness set to \"");
-      Serial.print(brightness);
-      Serial.println("\"");
+      if (millis() - mqttBrokerConnectionAttemptStart >= mqttBrokerConnectionAttemptTimeout) {
+        Serial.print("\nConnection attempt to MQTT broker timed out. Device restart...");
+        ESP.restart();
+      }
+      Serial.print("Failed to connect to MQTT broker. Return code: ");
+      Serial.println(mqttClient.state());
+      if (mqttUseSsl) {
+        printSslError();
+      }
+      delay(5000);
     }
   }
+  deviceStateLastPublished = 0;
+  ledStripStateLastPublished = 0;
 }
 
-void setLedStripColor(String payload) {
-  JsonDocument document;
-  DeserializationError error = deserializeJson(document, payload);
-  if (error) {
-    Serial.print("LED strip color setting failed: Invalid JSON payload \"");
-    Serial.print(payload);
-    Serial.print("\": ");
-    Serial.println(error.c_str());
-  } else {
-    String color = document["value"];
-    MatchState ms;
-    ms.Target((char *)color.c_str());
-    if (ms.Match("^#%x%x%x$") == REGEXP_MATCHED) {
-      String red = color.substring(1, 2);
-      red = red + red;
-      String green = color.substring(2, 3);
-      green = green + green;
-      String blue = color.substring(3, 4);
-      blue = blue + blue;
-      ledStripRed = strtoul(red.c_str(), NULL, 16);
-      ledStripGreen = strtoul(green.c_str(), NULL, 16);
-      ledStripBlue = strtoul(blue.c_str(), NULL, 16);
-      Serial.print("LED strip color set to \"");
-      Serial.print(color);
-      Serial.println("\"");
-    } else if (ms.Match("^#%x%x%x%x%x%x$") == REGEXP_MATCHED) {
-      String red = color.substring(1, 3);
-      String green = color.substring(3, 5);
-      String blue = color.substring(5, 7);
-      ledStripRed = strtoul(red.c_str(), NULL, 16);
-      ledStripGreen = strtoul(green.c_str(), NULL, 16);
-      ledStripBlue = strtoul(blue.c_str(), NULL, 16);
-      Serial.print("LED strip color set to \"");
-      Serial.print(color);
-      Serial.println("\"");
+void reconnectToMqttBroker() {
+  Serial.println("Connection to MQTT broker lost");
+  mqttBrokerConnectionAttemptStart = millis();
+  while (!mqttClient.connected()) {
+    Serial.println("Reconnecting to MQTT broker");
+    if (connectMqttClient()) {
+      Serial.print("Reconnected to MQTT broker. MQTT broker host: ");
+      Serial.print(mqttBroker);
+      Serial.print(":");
+      Serial.println(mqttPort);
+      subscribeMqttClient();
     } else {
-      Serial.print("LED strip color setting failed: Invalid color value \"");
-      Serial.print(color);
-      Serial.println("\": Must be a hex color value (#xxx/#xxxxxx).");
+      if (millis() - mqttBrokerConnectionAttemptStart >= mqttBrokerConnectionAttemptTimeout) {
+        Serial.print("\nConnection attempt to MQTT broker timed out. Device restart...");
+        ESP.restart();
+      }
+      Serial.print("Failed to reconnect to MQTT broker. Return code: ");
+      Serial.println(mqttClient.state());
+      if (mqttUseSsl) {
+        printSslError();
+      }
+      delay(5000);
     }
   }
-}
-
-void mqttCallback(char *topic, byte *payload, unsigned int length) {
-  String strTopic = String(topic);
-  String strPayload = String((char *)payload).substring(0, length);
-  if (strTopic.equals(mqttLedStripTopic + "/on")) {
-    setLedStripOn(strPayload);
-    publishLedStripState();
-  } else if (strTopic.equals(mqttLedStripTopic + "/brightness")) {
-    setLedStripBrightness(strPayload);
-    publishLedStripState();
-  } else if (strTopic.equals(mqttLedStripTopic + "/color")) {
-    setLedStripColor(strPayload);
-    publishLedStripState();
-  } else {
-    Serial.print("Topic \"");
-    Serial.print(topic);
-    Serial.println("\" ignored");
-  }
-}
-
-bool connectedToMqttBroker() {
-  return mqttClient.connected();
+  deviceStateLastPublished = 0;
+  ledStripStateLastPublished = 0;
 }
 
 bool connectMqttClient() {
@@ -391,103 +316,41 @@ bool connectMqttClient() {
   return mqttClient.connect(cStrMqttClientId, mqttUsername.c_str(), mqttPassword.c_str());
 }
 
-void setMqttBrokerConnectionAttemptStart() {
-  mqttBrokerConnectionAttemptStart = millis();
-}
-
-bool mqttBrokerConnectionAttemptTimedOut() {
-  return millis() - mqttBrokerConnectionAttemptStart >= mqttBrokerConnectionAttemptTimeout;
-}
-
 void subscribeMqttClient() {
   mqttClient.subscribe((mqttLedStripTopic + "/#").c_str());
 }
 
-int getMqttClientState() {
-  return mqttClient.state();
-}
-
-void printSslError() {
-  char errorBuffer[128];
-  wiFiClientSecure.getLastSSLError(errorBuffer, sizeof(errorBuffer));
-  Serial.print("SSL error: ");
-  Serial.println(errorBuffer);
-}
-
-void connectToMqttBroker() {
-  if (mqttUseSsl) {
-    configureSsl();
-  }
-  mqttClient.setServer(mqttBroker.c_str(), mqttPort);
-  mqttClient.setBufferSize(512);
-  mqttClient.setCallback(mqttCallback);
-  setMqttBrokerConnectionAttemptStart();
-  while (!connectedToMqttBroker()) {
-    Serial.println("Connecting to MQTT broker");
-    if (connectMqttClient()) {
-      Serial.print("Connected to MQTT broker. MQTT broker host: ");
-      Serial.print(mqttBroker);
-      Serial.print(":");
-      Serial.println(mqttPort);
-      subscribeMqttClient();
+void mqttCallback(char *topic, byte *payload, unsigned int length) {
+  String strTopic = String(topic);
+  String strPayload = String((char *)payload).substring(0, length);
+  if (ledStripStateLoaded) {
+    if (strTopic.equals(mqttLedStripTopic + "/on")) {
+      setLedStripOn(strPayload);
+      publishLedStripState();
+      ledStripStateLastPublished = millis();
+    } else if (strTopic.equals(mqttLedStripTopic + "/brightness")) {
+      setLedStripBrightness(strPayload);
+      publishLedStripState();
+      ledStripStateLastPublished = millis();
+    } else if (strTopic.equals(mqttLedStripTopic + "/color")) {
+      setLedStripColor(strPayload);
+      publishLedStripState();
+      ledStripStateLastPublished = millis();
     } else {
-      if (mqttBrokerConnectionAttemptTimedOut()) {
-        Serial.print("\nConnection attempt to MQTT broker timed out. Device restart...");
-        ESP.restart();
-      }
-      Serial.print("Failed to connect to MQTT broker. Return code: ");
-      Serial.println(getMqttClientState());
-      if (mqttUseSsl) {
-        printSslError();
-      }
-      delay(5000);
+      Serial.print("Topic \"");
+      Serial.print(topic);
+      Serial.println("\" ignored");
+    }
+  } else {
+    if (strTopic.equals(mqttLedStripTopic + "/state")) {
+      loadLedStripState(strPayload);
+      ledStripStateLoaded = true;
     }
   }
 }
 
-void reconnectToMqttBroker() {
-  Serial.println("Connection to MQTT broker lost");
-  setMqttBrokerConnectionAttemptStart();
-  while (!connectedToMqttBroker()) {
-    Serial.println("Reconnecting to MQTT broker");
-    if (connectMqttClient()) {
-      Serial.print("Reconnected to MQTT broker. MQTT broker host: ");
-      Serial.print(mqttBroker);
-      Serial.print(":");
-      Serial.println(mqttPort);
-      subscribeMqttClient();
-    } else {
-      if (mqttBrokerConnectionAttemptTimedOut()) {
-        Serial.print("\nConnection attempt to MQTT broker timed out. Device restart...");
-        ESP.restart();
-      }
-      Serial.print("Failed to reconnect to MQTT broker. Return code: ");
-      Serial.println(getMqttClientState());
-      if (mqttUseSsl) {
-        printSslError();
-      }
-      delay(5000);
-    }
-  }
-}
-
-String getUptime() {
-  int uptime = millis() / 1000;
-  int seconds = uptime % 60;
-  String strSeconds = String(seconds < 10 ? "0" : "") + seconds;
-  uptime /= 60;
-  int minutes = uptime % 60;
-  String strMinutes = String(minutes < 10 ? "0" : "") + minutes;
-  uptime /= 60;
-  int hours = uptime % 24;
-  String strHours = String(hours < 10 ? "0" : "") + hours;
-  uptime /= 24;
-  int days = uptime % 7;
-  String strDays = days == 0 ? String("") : String(days) + "d";
-  uptime /= 7;
-  int weeks = uptime % 7;
-  String strWeeks = weeks == 0 ? String("") : String(weeks) + "w";
-  return strWeeks + strDays + strHours + ":" + strMinutes + ":" + strSeconds;
+void publishDeviceState() {
+  mqttClient.publish((mqttDeviceTopic + "/state").c_str(), getDeviceState().c_str(), true);
 }
 
 String getDeviceState() {
@@ -517,6 +380,25 @@ String getDeviceState() {
     "}";
 }
 
+void loadLedStripState(String payload) {
+  JsonDocument document;
+  DeserializationError error = deserializeJson(document, payload);
+  if (error) {
+    Serial.print("LED strip state loading failed: Invalid JSON payload \"");
+    Serial.print(payload);
+    Serial.print("\": ");
+    Serial.println(error.c_str());
+  } else {
+    setLedStripOnValue(document["on"]);
+    setLedStripBrightnessValue(document["brightness"]);
+    setLedStripColorValue(document["color"]);
+  }
+}
+
+void publishLedStripState() {
+  mqttClient.publish((mqttLedStripTopic + "/state").c_str(), getLedStripState().c_str(), true);
+}
+
 String getLedStripState() {
   String on = ledStripOn ? "true" : "false";
   char color[8];
@@ -530,30 +412,126 @@ String getLedStripState() {
     "}";
 }
 
-bool timeToPublishState() {
-  return millis() - stateLastPublished >= statePublishInterval;
+void setLedStripOn(String payload) {
+  JsonDocument document;
+  DeserializationError error = deserializeJson(document, payload);
+  if (error) {
+    Serial.print("LED strip on setting failed: Invalid JSON payload \"");
+    Serial.print(payload);
+    Serial.print("\": ");
+    Serial.println(error.c_str());
+  } else {
+    setLedStripOnValue(document["value"]);
+  }
 }
 
-void setStateLastPublished() {
-  stateLastPublished = millis();
+void setLedStripOnValue(bool on) {
+  ledStripOn = on;
+  Serial.print("LED strip on set to \"");
+  Serial.print(on);
+  Serial.println("\"");
 }
 
-void publishDeviceState() {
-  mqttClient.publish((mqttDeviceTopic + "/state").c_str(), getDeviceState().c_str(), true);
+void setLedStripBrightness(String payload) {
+  JsonDocument document;
+  DeserializationError error = deserializeJson(document, payload);
+  if (error) {
+    Serial.print("LED strip brightness setting failed: Invalid JSON payload \"");
+    Serial.print(payload);
+    Serial.print("\": ");
+    Serial.println(error.c_str());
+  } else {
+    setLedStripBrightnessValue(document["value"]);
+  }
 }
 
-void publishLedStripState() {
-  mqttClient.publish((mqttLedStripTopic + "/state").c_str(), getLedStripState().c_str(), true);
+void setLedStripBrightnessValue(int brightness) {
+  if (brightness < 0 || brightness > 100) {
+    Serial.print("LED strip brightness setting failed: Invalid brightness value \"");
+    Serial.print(brightness);
+    Serial.println("\": Must be from 0 to 100.");
+  } else {
+    ledStripBrightness = brightness;
+    Serial.print("LED strip brightness set to \"");
+    Serial.print(brightness);
+    Serial.println("\"");
+  }
 }
 
-void publishState() {
-  publishDeviceState();
-  publishLedStripState();
-  setStateLastPublished();
+void setLedStripColor(String payload) {
+  JsonDocument document;
+  DeserializationError error = deserializeJson(document, payload);
+  if (error) {
+    Serial.print("LED strip color setting failed: Invalid JSON payload \"");
+    Serial.print(payload);
+    Serial.print("\": ");
+    Serial.println(error.c_str());
+  } else {
+    setLedStripColorValue(document["value"]);
+  }
+}
+
+void setLedStripColorValue(String color) {
+  MatchState ms;
+  ms.Target((char *)color.c_str());
+  if (ms.Match("^#%x%x%x$") == REGEXP_MATCHED) {
+    String red = color.substring(1, 2);
+    red = red + red;
+    String green = color.substring(2, 3);
+    green = green + green;
+    String blue = color.substring(3, 4);
+    blue = blue + blue;
+    ledStripRed = strtoul(red.c_str(), NULL, 16);
+    ledStripGreen = strtoul(green.c_str(), NULL, 16);
+    ledStripBlue = strtoul(blue.c_str(), NULL, 16);
+    Serial.print("LED strip color set to \"");
+    Serial.print(color);
+    Serial.println("\"");
+  } else if (ms.Match("^#%x%x%x%x%x%x$") == REGEXP_MATCHED) {
+    String red = color.substring(1, 3);
+    String green = color.substring(3, 5);
+    String blue = color.substring(5, 7);
+    ledStripRed = strtoul(red.c_str(), NULL, 16);
+    ledStripGreen = strtoul(green.c_str(), NULL, 16);
+    ledStripBlue = strtoul(blue.c_str(), NULL, 16);
+    Serial.print("LED strip color set to \"");
+    Serial.print(color);
+    Serial.println("\"");
+  } else {
+    Serial.print("LED strip color setting failed: Invalid color value \"");
+    Serial.print(color);
+    Serial.println("\": Must be a hex color value (#xxx/#xxxxxx).");
+  }
 }
 
 void setUpLedStrip() {
   analogWrite(redPin, ledStripOn ? ledStripRed * ledStripBrightness / 100 : 0);
   analogWrite(greenPin, ledStripOn ? ledStripGreen * ledStripBrightness / 100 : 0);
   analogWrite(bluePin, ledStripOn ? ledStripBlue * ledStripBrightness / 100 : 0);
+}
+
+void printSslError() {
+  char errorBuffer[128];
+  wiFiClientSecure.getLastSSLError(errorBuffer, sizeof(errorBuffer));
+  Serial.print("SSL error: ");
+  Serial.println(errorBuffer);
+}
+
+String getUptime() {
+  int uptime = millis() / 1000;
+  int seconds = uptime % 60;
+  String strSeconds = String(seconds < 10 ? "0" : "") + seconds;
+  uptime /= 60;
+  int minutes = uptime % 60;
+  String strMinutes = String(minutes < 10 ? "0" : "") + minutes;
+  uptime /= 60;
+  int hours = uptime % 24;
+  String strHours = String(hours < 10 ? "0" : "") + hours;
+  uptime /= 24;
+  int days = uptime % 7;
+  String strDays = days == 0 ? String("") : String(days) + "d";
+  uptime /= 7;
+  int weeks = uptime % 7;
+  String strWeeks = weeks == 0 ? String("") : String(weeks) + "w";
+  return strWeeks + strDays + strHours + ":" + strMinutes + ":" + strSeconds;
 }
