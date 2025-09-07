@@ -69,7 +69,7 @@ Below, you can see an example of the built hardware:
 
 ## Usage
 
-After the connection to the MQTT server, the LED strip controller sends the device state and the LED strip state every 15 seconds using the `device-topic/state` topic.
+After the connection to the MQTT server, the LED strip controller sends the device state and the LED strip state every 15 seconds using the `device-topic/state` topic, the `retain` flag is set to `true`.
 
 The device state contains the following data:
 - `coreVersion`
@@ -84,7 +84,7 @@ The device state contains the following data:
 - `uptime` (using the format `(W'w')(D'd')HH:MI:SS`)
 - `timestamp` (Unix time in seconds)
 
-The LED strip controller also sends the LED strip state every 15 senconds using the `led-strip-topic/state` topic.
+The LED strip controller also sends the LED strip state every 15 senconds using the `led-strip-topic/state` topic, the `retain` flag is set to `true`.
 
 The LED strip state contains the following data:
 - `on` (a boolean value indicating if the LED strip is or or not)
@@ -92,11 +92,16 @@ The LED strip state contains the following data:
 - `color` (in the `#rrggbb` format)
 - `timestamp` (Unix time in seconds)
 
-You can set the LED strip on or off using the `led-strip-topic/on` topic and the payload `{"value": true/false}`. Non-boolean values are ignored.
+After the connection to the MQTT server, the LED strip controller loads the message with the `led-strip-topic/state` topic and initializes the state. In case no message is processed withing 5 seconds after the connection to the MQTT server, the default values are used:
+- `on`: `true`
+- `brightness`: `100`
+- `color`: `#ffffff`
 
-You can set the LED strip brightness using the `led-strip-topic/brightness` topic and the payload `{"value": 0-100}`. Any value lower then 0 is interpreted as 0, any value grater than 100 is interpreted as 100. Non-integer values are ignored.
+You can set the LED strip on or off using the `led-strip-topic/on` topic and the payload `{"value": true/false}`. Non-boolean values are ignored, set the `retain` flag to `false`.
 
-You can set the LED strip color using the `led-strip-topic/color` topic and the payload `{"value": "#rgb/#rrggbb"}`. Invalid values are ignored.
+You can set the LED strip brightness using the `led-strip-topic/brightness` topic and the payload `{"value": 0-100}`. Any value lower then 0 is interpreted as 0, any value grater than 100 is interpreted as 100. Non-integer values are ignored, set the `retain` flag to `false`.
+
+You can set the LED strip color using the `led-strip-topic/color` topic and the payload `{"value": "#rgb/#rrggbb"}`. Invalid values are ignored, set the `retain` flag to `false`.
 
 ## Authors
 
