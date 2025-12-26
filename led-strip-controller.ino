@@ -147,8 +147,6 @@ void setUpLedStrip();
 
 void printSslError();
 
-String getUptime();
-
 void setup() {
   Serial.begin(115200);
   configureStaticIp();
@@ -363,7 +361,7 @@ String getDeviceState() {
   int freeHeapSize = ESP.getFreeHeap();
   int maxFreeHeapBlockSize = ESP.getMaxFreeBlockSize();
   int heapFragmentation = ESP.getHeapFragmentation();
-  String uptime = getUptime();
+  int uptime = millis() / 1000;
   int timestamp = time(nullptr);
   return String("{\n") +
     "  \"coreVersion\": \"" + coreVersion + "\",\n" +
@@ -375,7 +373,7 @@ String getDeviceState() {
     "  \"freeHeapSize\": " + freeHeapSize + ",\n" +
     "  \"maxFreeHeapBlockSize\": " + maxFreeHeapBlockSize + ",\n" +
     "  \"heapFragmentation\": " + heapFragmentation + ",\n" +
-    "  \"uptime\": \"" + uptime + "\",\n" +
+    "  \"uptime\": " + uptime + ",\n" +
     "  \"timestamp\": " + timestamp + "\n" +
     "}";
 }
@@ -515,23 +513,4 @@ void printSslError() {
   wiFiClientSecure.getLastSSLError(errorBuffer, sizeof(errorBuffer));
   Serial.print("SSL error: ");
   Serial.println(errorBuffer);
-}
-
-String getUptime() {
-  int uptime = millis() / 1000;
-  int seconds = uptime % 60;
-  String strSeconds = String(seconds < 10 ? "0" : "") + seconds;
-  uptime /= 60;
-  int minutes = uptime % 60;
-  String strMinutes = String(minutes < 10 ? "0" : "") + minutes;
-  uptime /= 60;
-  int hours = uptime % 24;
-  String strHours = String(hours < 10 ? "0" : "") + hours;
-  uptime /= 24;
-  int days = uptime % 7;
-  String strDays = days == 0 ? String("") : String(days) + "d";
-  uptime /= 7;
-  int weeks = uptime % 7;
-  String strWeeks = weeks == 0 ? String("") : String(weeks) + "w";
-  return strWeeks + strDays + strHours + ":" + strMinutes + ":" + strSeconds;
 }
