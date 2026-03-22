@@ -31,7 +31,7 @@ const String mqttUsername = "mqttuser";
 const String mqttPassword = "mqttpassword";
 const int mqttPort = 1883;
 const String mqttClientId = "clientid";
-const String mqttDeviceTopic = "mysite/device/devicename";
+const String mqttDeviceTopic = "mysite/esp8266/devicename";
 const String mqttLedStripTopic = "mysite/led-strip/ledstripname";
 const bool mqttUseSsl = false;
 const String mqttCaCert = R"EOF(
@@ -59,14 +59,6 @@ const IPAddress ntpServer(217, 31, 202, 100);
 const int redPin = 12;
 const int greenPin = 13;
 const int bluePin = 14;
-
-// EEPROM configuration
-
-const int eepromOnAddress = 0;
-const int eepromBrightnessAddress = 1;
-const int eepromColorRedAddress = 2;
-const int eepromColorGreenAddress = 3;
-const int eepromColorBlueAddress = 4;
 
 /* PROGRAM */
 
