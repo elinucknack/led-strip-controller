@@ -77,11 +77,11 @@ BearSSL::WiFiClientSecure wiFiClientSecure;
 PubSubClient mqttClient(mqttUseSsl ? wiFiClientSecure : wiFiClient);
 
 int deviceStatePublishInterval = 15000;
-int deviceStateLastPublished = 0;
+int deviceStateLastPublished = millis() - deviceStatePublishInterval;
 
 bool ledStripStateLoaded = false;
 int ledStripStatePublishInterval = 15000;
-int ledStripStateLastPublished = 0;
+int ledStripStateLastPublished = millis() - ledStripStatePublishInterval;
 
 bool ledStripOn = false;
 int ledStripBrightness = 100;
@@ -145,7 +145,6 @@ void setup() {
   connectToWiFi();
   connectToNtpServer();
   connectToMqttBroker();
-  ledStripStateLastPublished = millis() - 10000;
 }
 
 void loop() {
