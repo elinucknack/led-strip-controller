@@ -76,11 +76,14 @@ BearSSL::WiFiClientSecure wiFiClientSecure;
 
 PubSubClient mqttClient(mqttUseSsl ? wiFiClientSecure : wiFiClient);
 
-int deviceStatePublishInterval = 15000;
-int deviceStateLastPublished = millis() - deviceStatePublishInterval;
+int deviceMetadataPublishInterval = 3600000;
+int deviceMetadataLastPublished = millis() - deviceMetadataPublishInterval;
+
+int deviceTelemetryPublishInterval = 60000;
+int deviceTelemetryLastPublished = millis() - deviceTelemetryPublishInterval;
 
 bool ledStripStateLoaded = false;
-int ledStripStatePublishInterval = 15000;
+int ledStripStatePublishInterval = 60000;
 int ledStripStateLastPublished = millis() - ledStripStatePublishInterval;
 
 bool ledStripOn = false;
@@ -113,9 +116,13 @@ void subscribeMqttClient();
 
 void mqttCallback(char *topic, byte *payload, unsigned int length);
 
-void publishDeviceState();
+void publishDeviceMetadata();
 
-String getDeviceState();
+void publishDeviceTelemetry();
+
+String getDeviceMetadata();
+
+String getDeviceTelemetry();
 
 void loadLedStripState(String payload);
 
@@ -154,9 +161,13 @@ void loop() {
   if (!mqttClient.connected()) {
     reconnectToMqttBroker();
   }
-  if (millis() - deviceStateLastPublished >= deviceStatePublishInterval) {
-    publishDeviceState();
-    deviceStateLastPublished = millis();
+  if (millis() - deviceMetadataLastPublished >= deviceMetadataPublishInterval) {
+    publishDeviceMetadata();
+    deviceMetadataLastPublished = millis();
+  }
+  if (millis() - deviceTelemetryLastPublished >= deviceTelemetryPublishInterval) {
+    publishDeviceTelemetry();
+    deviceTelemetryLastPublished = millis();
   }
   if (millis() - ledStripStateLastPublished >= ledStripStatePublishInterval) {
     publishLedStripState();
@@ -252,6 +263,10 @@ void connectToMqttBroker() {
       Serial.print(":");
       Serial.println(mqttPort);
       subscribeMqttClient();
+      publishDeviceTelemetry();
+      deviceTelemetryLastPublished = millis();
+      publishDeviceMetadata();
+      deviceMetadataLastPublished = millis();
     } else {
       if (millis() - mqttBrokerConnectionAttemptStart >= mqttBrokerConnectionAttemptTimeout) {
         Serial.print("\nConnection attempt to MQTT broker timed out. Device restart...");
@@ -265,7 +280,7 @@ void connectToMqttBroker() {
       delay(5000);
     }
   }
-  deviceStateLastPublished = 0;
+  deviceTelemetryLastPublished = 0;
   ledStripStateLastPublished = 0;
 }
 
@@ -280,6 +295,10 @@ void reconnectToMqttBroker() {
       Serial.print(":");
       Serial.println(mqttPort);
       subscribeMqttClient();
+      publishDeviceTelemetry();
+      deviceTelemetryLastPublished = millis();
+      publishDeviceMetadata();
+      deviceMetadataLastPublished = millis();
     } else {
       if (millis() - mqttBrokerConnectionAttemptStart >= mqttBrokerConnectionAttemptTimeout) {
         Serial.print("\nConnection attempt to MQTT broker timed out. Device restart...");
@@ -293,7 +312,7 @@ void reconnectToMqttBroker() {
       delay(5000);
     }
   }
-  deviceStateLastPublished = 0;
+  deviceTelemetryLastPublished = 0;
   ledStripStateLastPublished = 0;
 }
 
@@ -306,7 +325,7 @@ bool connectMqttClient() {
 }
 
 void subscribeMqttClient() {
-  mqttClient.subscribe((mqttLedStripTopic + "/#").c_str());
+  mqttClient.subscribe((mqttLedStripTopic + "/#").c_str(), 1);
 }
 
 void mqttCallback(char *topic, byte *payload, unsigned int length) {
@@ -338,28 +357,39 @@ void mqttCallback(char *topic, byte *payload, unsigned int length) {
   }
 }
 
-void publishDeviceState() {
-  mqttClient.publish((mqttDeviceTopic + "/state").c_str(), getDeviceState().c_str(), true);
+void publishDeviceMetadata() {
+  mqttClient.publish((mqttDeviceTopic + "/metadata").c_str(), getDeviceMetadata().c_str(), true);
 }
 
-String getDeviceState() {
+void publishDeviceTelemetry() {
+  mqttClient.publish((mqttDeviceTopic + "/telemetry").c_str(), getDeviceTelemetry().c_str(), true);
+}
+
+String getDeviceMetadata() {
   String coreVersion = ESP.getCoreVersion();
   int cpuFrequency = ESP.getCpuFreqMHz();
   int flashChipSize = ESP.getFlashChipSize();
   int flashChipFrequency = ESP.getFlashChipSpeed();
   int programSize = ESP.getSketchSize();
-  int freeStackSize = ESP.getFreeContStack();
-  int freeHeapSize = ESP.getFreeHeap();
-  int maxFreeHeapBlockSize = ESP.getMaxFreeBlockSize();
-  int heapFragmentation = ESP.getHeapFragmentation();
-  int uptime = millis() / 1000;
-  int timestamp = time(nullptr);
+  int timestamp = time(nullptr) / 60 * 60;
   return String("{\n") +
     "  \"coreVersion\": \"" + coreVersion + "\",\n" +
     "  \"cpuFrequency\": " + cpuFrequency + ",\n" +
     "  \"flashChipSize\": " + flashChipSize + ",\n" +
     "  \"flashChipFrequency\": " + flashChipFrequency + ",\n" +
     "  \"programSize\": " + programSize + ",\n" +
+    "  \"timestamp\": " + timestamp + "\n" +
+    "}";
+}
+
+String getDeviceTelemetry() {
+  int freeStackSize = ESP.getFreeContStack();
+  int freeHeapSize = ESP.getFreeHeap();
+  int maxFreeHeapBlockSize = ESP.getMaxFreeBlockSize();
+  int heapFragmentation = ESP.getHeapFragmentation();
+  int uptime = millis() / 1000;
+  int timestamp = time(nullptr) / 60 * 60;
+  return String("{\n") +
     "  \"freeStackSize\": " + freeStackSize + ",\n" +
     "  \"freeHeapSize\": " + freeHeapSize + ",\n" +
     "  \"maxFreeHeapBlockSize\": " + maxFreeHeapBlockSize + ",\n" +
