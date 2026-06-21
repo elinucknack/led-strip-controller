@@ -72,7 +72,7 @@ Below, you can see an example of the built hardware:
 ### MQTT Topics & Data Structures
 
 #### Device Metadata
-Sent every **60 minutes** to `mqttDeviceTopic/metadata` with the `retain` flag set to `true`.
+Sent every **60 minutes** to `mqttDeviceTopic/metadata` with the `retain` flag set to `true` and **QoS 0**.
 - `coreVersion`: ESP8266 core version.
 - `cpuFrequency`: CPU frequency (in MHz).
 - `flashChipSize`: Flash chip size (in bytes).
@@ -81,7 +81,7 @@ Sent every **60 minutes** to `mqttDeviceTopic/metadata` with the `retain` flag s
 - `timestamp`: Current Unix timestamp (rounded down to minutes).
 
 #### Device Telemetry
-Sent every **60 seconds** to `mqttDeviceTopic/telemetry` with the `retain` flag set to `true`.
+Sent every **60 seconds** to `mqttDeviceTopic/telemetry` with the `retain` flag set to `true` and **QoS 0**.
 - `freeStackSize`: Free stack size (in bytes).
 - `freeHeapSize`: Free heap size (in bytes).
 - `maxFreeHeapBlockSize`: Maximum free heap block size (in bytes).
@@ -90,7 +90,7 @@ Sent every **60 seconds** to `mqttDeviceTopic/telemetry` with the `retain` flag 
 - `timestamp`: Current Unix timestamp (rounded down to minutes).
 
 #### LED Strip State
-Sent every **60 seconds** (or immediately after a state change) to `mqttLedStripTopic/state` with the `retain` flag set to `true`.
+Sent every **60 seconds** (or immediately after a state change) to `mqttLedStripTopic/state` with the `retain` flag set to `true` and **QoS 0**.
 - `on`: Boolean value indicating if the LED strip is on or off.
 - `brightness`: Current brightness (integer value, `0-100`).
 - `color`: Current hex color code (in `#rrggbb` format).
